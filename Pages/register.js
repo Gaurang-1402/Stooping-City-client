@@ -1,4 +1,33 @@
+import { useState } from "react"
+import axios from "axios"
+
 const RegisterPage = () => {
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [gender, setGender] = useState("Female")
+  const [age, setAge] = useState(0)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [secret, setSecret] = useState("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const data = await axios.post("http://localhost:8000/api/register", {
+        firstName,
+        lastName,
+        gender,
+        age,
+        email,
+        password,
+        secret,
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className='container'>
       <div className='row'>
@@ -13,13 +42,15 @@ const RegisterPage = () => {
                   >
                     <div className='card-body p-4 p-md-5'>
                       <h3 className='mb-4 pb-2 pb-md-0 mb-md-5'>
-                        Registration Form
+                        Nice to have you onboard! Enter your details to register
                       </h3>
-                      <form>
+                      <form onSubmit={handleSubmit}>
                         <div className='row'>
                           <div className='col-md-6 mb-4'>
                             <div className='form-outline'>
                               <input
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                                 type='text'
                                 id='firstName'
                                 className='form-control form-control-lg'
@@ -32,6 +63,8 @@ const RegisterPage = () => {
                           <div className='col-md-6 mb-4'>
                             <div className='form-outline'>
                               <input
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 type='text'
                                 id='lastName'
                                 className='form-control form-control-lg'
@@ -46,15 +79,14 @@ const RegisterPage = () => {
                           <div className='col-md-6 mb-4 d-flex align-items-center'>
                             <div className='form-outline datepicker w-100'>
                               <input
-                                type='text'
+                                onChange={(e) => setAge(e.target.value)}
+                                value={age}
+                                type='number'
                                 className='form-control form-control-lg'
                                 id='birthdayDate'
                               />
-                              <label
-                                htmlFor='birthdayDate'
-                                className='form-label'
-                              >
-                                Birthday
+                              <label htmlFor='age' className='form-label'>
+                                Age
                               </label>
                             </div>
                           </div>
@@ -62,6 +94,7 @@ const RegisterPage = () => {
                             <h6 className='mb-2 pb-1'>Gender: </h6>
                             <div className='form-check form-check-inline'>
                               <input
+                                onChange={(e) => setGender("Female")}
                                 className='form-check-input'
                                 type='radio'
                                 name='inlineRadioOptions'
@@ -78,6 +111,7 @@ const RegisterPage = () => {
                             </div>
                             <div className='form-check form-check-inline'>
                               <input
+                                onChange={(e) => setGender("Male")}
                                 className='form-check-input'
                                 type='radio'
                                 name='inlineRadioOptions'
@@ -93,6 +127,7 @@ const RegisterPage = () => {
                             </div>
                             <div className='form-check form-check-inline'>
                               <input
+                                onChange={(e) => setGender("Other")}
                                 className='form-check-input'
                                 type='radio'
                                 name='inlineRadioOptions'
@@ -112,6 +147,8 @@ const RegisterPage = () => {
                           <div className='col-md-6 mb-4 pb-2'>
                             <div className='form-outline'>
                               <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 type='email'
                                 id='emailAddress'
                                 className='form-control form-control-lg'
@@ -124,22 +161,65 @@ const RegisterPage = () => {
                               </label>
                             </div>
                           </div>
+
                           <div className='col-md-6 mb-4 pb-2'>
                             <div className='form-outline'>
                               <input
-                                type='tel'
-                                id='phoneNumber'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                type='password'
+                                id='password'
                                 className='form-control form-control-lg'
                               />
+                              <label className='form-label' htmlFor='password'>
+                                Password
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className='col-md-6 mb-4 pb-2'>
+                            <div className='form-outline'>
+                              <select className='form-control'>
+                                <option className='form-text text-muted-control'>
+                                  What is your favorite color?
+                                </option>
+
+                                <option className='form-text text-muted-control'>
+                                  What is your best friend's name?
+                                </option>
+
+                                <option className='form-text text-muted-control'>
+                                  What city were you born in?
+                                </option>
+                              </select>
+
                               <label
                                 className='form-label'
                                 htmlFor='phoneNumber'
                               >
-                                Phone Number
+                                Pick a question
+                              </label>
+                            </div>
+                            <small className='form-text text-muted'>
+                              You can use this to reset your password if
+                              forgotten
+                            </small>
+                          </div>
+
+                          <div className='col-md-6 mb-4 pb-2'>
+                            <div className='form-outline'>
+                              <input
+                                value={secret}
+                                onChange={(e) => setSecret(e.target.value)}
+                                className='form-control form-control-lg'
+                              />
+                              <label className='form-label'>
+                                Enter your answer
                               </label>
                             </div>
                           </div>
                         </div>
+
                         <div className='mt-4 pt-2'>
                           <input
                             className='btn btn-primary btn-lg'

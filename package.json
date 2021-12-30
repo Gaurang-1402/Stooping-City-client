@@ -17,9 +17,13 @@
   "author": "Gaurang Ruparelia",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^4.18.1",
+    "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "next": "^12.0.7",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-toastify": "^8.1.0"
   }
 }
