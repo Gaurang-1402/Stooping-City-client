@@ -1,32 +1,62 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import axios from "axios"
+import { toast } from "react-toastify"
+import { Modal } from "antd"
+import Link from "next/link"
+import { Spin } from "antd"
+import { UserContext } from "../Context"
+import { useRouter } from "next/router"
 
 const RegisterPage = () => {
+  const router = useRouter()
+
+  const [state, setState] = useContext(UserContext)
+
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [gender, setGender] = useState("Female")
   const [age, setAge] = useState(0)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [secret, setSecret] = useState("")
+  const [ok, setOk] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    setLoading(true)
     try {
-      const data = await axios.post("http://localhost:8000/api/register", {
-        firstName,
-        lastName,
-        gender,
-        age,
-        email,
-        password,
-        secret,
-      })
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/register`,
+        {
+          firstName,
+          lastName,
+          gender,
+          age,
+          email,
+          password,
+          confirmPassword,
+          secret,
+        }
+      )
+      setLastName("")
+      setFirstName("")
+      setGender("Female")
+      setEmail("")
+      setConfirmPassword("")
+      setPassword("")
+      setLoading(false)
+      setOk(data.ok)
     } catch (err) {
-      console.log(err)
+      setLoading(false)
+      toast.error(err.response.data)
     }
   }
+
+  // this is done so that if the user types "/login" in website bar
+  // even after you have logged in you redirect to home
+  if (state && state.token) router.push("/")
 
   return (
     <div className='container'>
@@ -176,6 +206,22 @@ const RegisterPage = () => {
                               </label>
                             </div>
                           </div>
+                          <div className='col-md-6 mb-4 pb-2'>
+                            <div className='form-outline'>
+                              <input
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                  setConfirmPassword(e.target.value)
+                                }
+                                type='password'
+                                id='password'
+                                className='form-control form-control-lg'
+                              />
+                              <label className='form-label' htmlFor='password'>
+                                Confirm Password
+                              </label>
+                            </div>
+                          </div>
 
                           <div className='col-md-6 mb-4 pb-2'>
                             <div className='form-outline'>
@@ -221,11 +267,24 @@ const RegisterPage = () => {
                         </div>
 
                         <div className='mt-4 pt-2'>
-                          <input
+                          <button
                             className='btn btn-primary btn-lg'
                             type='submit'
                             defaultValue='Submit'
-                          />
+                          >
+                            {loading ? <Spin></Spin> : "SUBMIT"}
+                          </button>
+                        </div>
+                        <div
+                          className='
+                        '
+                        >
+                          <div className='col'>
+                            Already have an account?{" "}
+                            <Link href='/login'>
+                              <a className=''> Login</a>
+                            </Link>
+                          </div>
                         </div>
                       </form>
                     </div>
@@ -234,6 +293,21 @@ const RegisterPage = () => {
               </div>
             </div>
           </section>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col'>
+          <Modal
+            title='Registration Successful'
+            visible={ok}
+            onCancel={() => setOk(false)}
+            footer={null}
+          >
+            <p>Now you can login with your email and password. Let's do it</p>
+            <Link href='/login'>
+              <a className='btn btn-primary'> Login</a>
+            </Link>
+          </Modal>
         </div>
       </div>
     </div>

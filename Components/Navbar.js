@@ -1,21 +1,104 @@
-import React from "react"
+import { useContext, useEffect, useState } from "react"
 import Link from "next/link"
+// imported for logout
+import { UserContext } from "../Context"
+// imported
+import { useRouter } from "next/router"
 
 export const Navbar = () => {
+  const [state, setState] = useContext(UserContext)
+
+  // we do this so that we can redirect user to a page post login page
+  const router = useRouter()
+
+  const handleLogout = () => {
+    // this function exists to logout
+
+    // to logout, we need to clear localStorage
+    window.localStorage.removeItem("auth")
+    // and set flobal state as null
+    setState(null)
+
+    // we send user to login
+    router.push("/login")
+  }
+  // we conditionally render login and register if user is stored
+
+  // now we want to highlight the tab in navbar we are currently on
+  // to do this we need the endpoint in the url first
+
+  const [currentTab, setCurrentTab] = useState("")
+
+  useEffect(
+    () => {
+      // this is how to get the endpoint of the url
+      // what is the first part? next.js has both server side and client side methods
+      // so we need to check if we are on client right now
+      process.browser && setCurrentTab(window.location.pathname)
+      // process.browser true if we are in client side
+    },
+    // these are the dependencies. If either of these change we rerender the page
+    [process.browser && window.location.pathname]
+  )
+
+  // we use useEffect while component mounts to check for which tab
+  // is highlighted
+
   return (
     <div>
       <nav className='nav bg-dark d-flex justify-content-end'>
         <Link href='/'>
-          <a className='nav-link text-light'>Home</a>
+          <a
+            className={`nav-link text-light ${
+              currentTab === "/" ? "current-tab text-dark" : ""
+            }`}
+          >
+            Home
+          </a>
         </Link>
 
-        <Link href='/login'>
-          <a className='nav-link text-light'>Login</a>
-        </Link>
-
-        <Link href='/register'>
-          <a className='nav-link text-light'>Register</a>
-        </Link>
+        {state !== null ? (
+          <>
+            <Link href='/user/dashboard'>
+              <a
+                className={`nav-link text-light ${
+                  currentTab === "/user/dashboard"
+                    ? "current-tab text-dark"
+                    : ""
+                }`}
+              >
+                {state &&
+                  state.user &&
+                  state.user.firstName + " " + state.user.lastName}
+              </a>
+            </Link>
+            <a onClick={handleLogout} className='nav-link text-light'>
+              Logout
+            </a>
+          </>
+        ) : (
+          <>
+            {" "}
+            <Link href='/login'>
+              <a
+                className={`nav-link text-light ${
+                  currentTab === "/login" ? "current-tab  text-dark" : ""
+                }`}
+              >
+                Login
+              </a>
+            </Link>
+            <Link href='/register'>
+              <a
+                className={`nav-link text-light ${
+                  currentTab === "/register" ? "current-tab text-dark" : ""
+                }`}
+              >
+                Register
+              </a>
+            </Link>{" "}
+          </>
+        )}
       </nav>
     </div>
   )

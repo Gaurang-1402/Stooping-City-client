@@ -1,5 +1,11 @@
+import { UserContext } from "../Context"
+import { useContext } from "react"
+
 const Home = () => {
+  // we have access to global state using this piece of code
+  const [state, setState] = useContext(UserContext)
   return (
+    // remember --> you have to JSON.stringify state if it is an object
     <div className='container'>
       <div className='row'>
         <div className='col'>

@@ -30,3 +30,13 @@ img {
 .card-registration .select-arrow {
   top: 13px;
 }
+
+.active {
+  background-color: lightcoral;
+  color: black;
+}
+
+.current-tab {
+  background-color: lightcoral;
+  color: black;
+}
