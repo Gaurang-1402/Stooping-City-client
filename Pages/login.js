@@ -22,33 +22,37 @@ const LoginPage = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/login`,
-        {
-          email,
-          password,
-        }
-      )
+      const { data } = await axios.post(`/login`, {
+        email,
+        password,
+      })
       // Once you have successfully logged in and request goes through
       // you redirect to homepage
       // router.push("/")
       // console.log(data)
 
-      // we have the data from the backend
-      // we now need to save in global state using context API
-      setState({ user: data.user, token: data.token })
+      if (data.error) {
+        toast.error(data.error)
+        setLoading(false)
+      }
 
-      // but once we refresh page, we lose access to everything in
-      // global state
-      // to solve, we save in local storage
-      // window.localStorage.setItem(<key>, <value has to be in json>) is the function call
-      window.localStorage.setItem("auth", JSON.stringify(data))
+      if (data.success) {
+        // we have the data from the backend
+        // we now need to save in global state using context API
+        setState({ user: data.user, token: data.token })
 
-      router.push("/")
-      setEmail("")
-      setOk(false)
-      setPassword("")
-      setLoading(false)
+        // but once we refresh page, we lose access to everything in
+        // global state
+        // to solve, we save in local storage
+        // window.localStorage.setItem(<key>, <value has to be in json>) is the function call
+        window.localStorage.setItem("auth", JSON.stringify(data))
+
+        router.push("/")
+        setEmail("")
+        setOk(false)
+        setPassword("")
+        setLoading(false)
+      }
     } catch (err) {
       setLoading(false)
       toast.error(err.response.data)
@@ -125,6 +129,12 @@ const LoginPage = () => {
                             First time here?{" "}
                             <Link href='/register'>
                               <a className=''> Register</a>
+                            </Link>
+                          </div>
+
+                          <div className='col'>
+                            <Link href='/forgot-password'>
+                              <a className='text-danger'> Forgot Password?</a>
                             </Link>
                           </div>
                         </div>

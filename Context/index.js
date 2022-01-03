@@ -3,6 +3,9 @@
 // context api is available in react
 import { useState, createContext, useEffect } from "react"
 
+import { useRouter } from "next/router"
+import axios from "axios"
+
 // to execute context do this
 const UserContext = createContext()
 
@@ -17,6 +20,38 @@ const UserProvider = ({ children }) => {
     user: {},
     token: "",
   })
+
+  const router = useRouter()
+
+  // axios configuration is in index.js so it applies to the entire
+  // app in one go
+
+  // axios configuration so we don't keep repeating the same
+  // bearer token mention in the headers
+  // and set default URL from environment variables, leaving
+  // only endpoints needed to be men requests
+  const token = state && state.token ? state.token : ""
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_API
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+
+  // documentation: https://github.com/axios/axios
+  // auto logout once jwt token expires
+  axios.interceptors.response.use(
+    function (response) {
+      // Do something before request is sent
+      return response
+    },
+    function (error) {
+      // error generated calls for jwt token expiry so we do this here
+      // Do something with request error
+      let res = error.response
+      if (res.status === 401 && res.config && !res.config.__isRetryRequest) {
+        setState(null)
+        window.localStorage.removeItem("auth")
+        router.push("/login")
+      }
+    }
+  )
 
   // if we have something in windows local storage update state with that information
   // to retrieve what is stored in local storage we enter
