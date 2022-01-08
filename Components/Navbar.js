@@ -4,6 +4,7 @@ import Link from "next/link"
 import { UserContext } from "../Context"
 // imported
 import { useRouter } from "next/router"
+import { Avatar } from "antd"
 
 export const Navbar = () => {
   const [state, setState] = useContext(UserContext)
@@ -46,7 +47,14 @@ export const Navbar = () => {
 
   return (
     <div>
-      <nav className='nav bg-dark d-flex justify-content-end'>
+      <nav className='nav bg-dark d-flex justify-content-between'>
+        <div>
+          <Link href='/'>
+            <a className={`nav-link text-light logo`}>
+              <Avatar src='/images/logo.png' /> Wise
+            </a>
+          </Link>
+        </div>{" "}
         <Link href='/'>
           <a
             className={`nav-link text-light ${
@@ -56,29 +64,57 @@ export const Navbar = () => {
             Home
           </a>
         </Link>
-
         {state !== null ? (
-          <>
-            <Link href='/user/dashboard'>
-              <a
-                className={`nav-link text-light ${
-                  currentTab === "/user/dashboard"
-                    ? "current-tab text-dark"
-                    : ""
-                }`}
-              >
-                {state &&
-                  state.user &&
-                  state.user.firstName + " " + state.user.lastName}
-              </a>
-            </Link>
-            <a onClick={handleLogout} className='nav-link text-light'>
-              Logout
-            </a>
-          </>
+          <div className='dropdown'>
+            <button
+              className='btn btn-secondary dropdown-toggle'
+              type='button'
+              id='dropdownMenuButton1'
+              data-bs-toggle='dropdown'
+              aria-expanded='false'
+            >
+              {state &&
+                state.user &&
+                state.user.firstName + " " + state.user.lastName}
+            </button>
+            <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
+              <li>
+                <Link href='/user/dashboard'>
+                  <a
+                    className={`nav-link  dropdown-item ${
+                      currentTab === "/user/dashboard"
+                        ? "current-tab text-dark"
+                        : ""
+                    }`}
+                  >
+                    Dashboard
+                  </a>
+                </Link>
+              </li>
+
+              <li>
+                <Link href='/user/profile/update'>
+                  <a
+                    className={`nav-link  dropdown-item ${
+                      currentTab === "/user/profile/update"
+                        ? "current-tab text-dark"
+                        : ""
+                    }`}
+                  >
+                    Profle
+                  </a>
+                </Link>
+              </li>
+
+              <li>
+                <a onClick={handleLogout} className='nav-link '>
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </div>
         ) : (
           <>
-            {" "}
             <Link href='/login'>
               <a
                 className={`nav-link text-light ${

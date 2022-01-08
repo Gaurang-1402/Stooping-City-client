@@ -11,7 +11,7 @@ import { CameraOutlined, LoadingOutlined } from "@ant-design/icons"
 
 // recieve the following as props from parent page
 // and fire them off when appropriate
-const CreatePostForm = ({
+const PostForm = ({
   handlePostSubmit,
   postContent,
   setPostContent,
@@ -63,4 +63,4 @@ const CreatePostForm = ({
   )
 }
 
-export default CreatePostForm
+export default PostForm

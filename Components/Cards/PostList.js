@@ -13,7 +13,7 @@ import {
 import renderHTML from "react-render-html"
 import { UserContext } from "../../Context"
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, handleDelete }) => {
   const [state, setState] = useContext(UserContext)
   const router = useRouter()
   return (
@@ -85,6 +85,9 @@ const PostList = ({ posts }) => {
                             style={{
                               marginRight: "1rem",
                               marginLeft: "0.5rem",
+                            }}
+                            onClick={() => {
+                              handleDelete(post)
                             }}
                           ></DeleteOutlined>
                         </div>

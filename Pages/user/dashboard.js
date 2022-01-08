@@ -1,11 +1,12 @@
 import { UserContext } from "../../Context"
 import { useContext, useState, useEffect } from "react"
 import UserRoute from "../../Routes/UserRoute"
-import CreatePostForm from "../../Components/CreatePostForm"
+import PostForm from "../../Components/PostForm"
 import axios from "axios"
 import { toast } from "react-toastify"
 import "react-quill/dist/quill.snow.css"
 import PostList from "../../Components/Cards/PostList"
+import PeopleComponent from "../../Components/Cards/PeopleComponent"
 
 const Dashboard = () => {
   // we have access to global state using this piece of code
@@ -17,16 +18,28 @@ const Dashboard = () => {
   const [image, setImage] = useState({})
   const [uploading, setUploading] = useState(false)
   const [posts, setPosts] = useState([])
+  const [people, setPeople] = useState([])
   useEffect(() => {
     if (state && state.token) {
       fetchPosts()
+      fetchPeople()
     }
-  }, [state && state.token])
+  }, [state && state.token, posts])
+
+  const handleFollow = async (user) => {
+    console.log(user)
+  }
+
+  const fetchPeople = async () => {
+    const { data } = await axios.get("/find-people")
+    console.log(data)
+    setPeople(data)
+  }
 
   const fetchPosts = async () => {
     try {
       const { data } = await axios.get("/user-posts")
-      console.log("user posts => ", data[0])
+      // console.log("user posts => ", data[0])
       setPosts(data)
     } catch (err) {
       console.log(err)
@@ -49,6 +62,22 @@ const Dashboard = () => {
     }
   }
 
+  const handleDelete = async (post) => {
+    try {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this post?"
+      )
+
+      if (!confirmDelete) return
+      const { data } = await axios.delete(`/delete-post/${post._id}`)
+      if (data.ok) {
+        toast.error("Post deleted")
+        fetchPosts()
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
   const handlePostSubmit = async (e) => {
     e.preventDefault()
 
@@ -57,6 +86,8 @@ const Dashboard = () => {
         postContent,
         image,
       })
+
+      console.log(data)
 
       if (data.error) {
         toast.error(data.error)
@@ -83,18 +114,21 @@ const Dashboard = () => {
 
         <div className='row py-3'>
           <div className='col-md-8'>
-            <CreatePostForm
+            <PostForm
               handlePostSubmit={handlePostSubmit}
               postContent={postContent}
               setPostContent={setPostContent}
               handleImageUpload={handleImageUpload}
               uploading={uploading}
               image={image}
-            ></CreatePostForm>
-            <PostList posts={posts}></PostList>
+            ></PostForm>
+            <PostList posts={posts} handleDelete={handleDelete}></PostList>
           </div>
           <div className='col-md-4' style={{ height: "1vh" }}>
-            Sidebar
+            <PeopleComponent
+              handleFollow={handleFollow}
+              people={people}
+            ></PeopleComponent>
           </div>
         </div>
         <br />

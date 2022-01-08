@@ -47,7 +47,7 @@ const LoginPage = () => {
         // window.localStorage.setItem(<key>, <value has to be in json>) is the function call
         window.localStorage.setItem("auth", JSON.stringify(data))
 
-        router.push("/")
+        router.push("/user/dashboard")
         setEmail("")
         setOk(false)
         setPassword("")
