@@ -59,7 +59,7 @@ const UpdatePage = () => {
         auth.user = data
         localStorage.setItem("auth", JSON.stringify(auth))
         // update context
-        setState({ ...state, user })
+        setState({ ...state, user: data })
         setLoading(false)
         setOk(true)
       }

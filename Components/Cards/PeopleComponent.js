@@ -10,7 +10,7 @@ const PeopleComponent = ({ people, handleFollow }) => {
 
   const sourceImage = (user) => {
     if (user.image) {
-      return <Avatar src={user.image}></Avatar>
+      return <Avatar src={user.image.url}></Avatar>
     } else {
       return <Avatar size={30}>{user.firstName[0] + user.lastName[0]}</Avatar>
     }

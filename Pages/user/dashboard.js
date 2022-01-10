@@ -7,6 +7,9 @@ import { toast } from "react-toastify"
 import "react-quill/dist/quill.snow.css"
 import PostList from "../../Components/Cards/PostList"
 import PeopleComponent from "../../Components/Cards/PeopleComponent"
+import Link from "next/link"
+import { Modal } from "antd"
+import CommentForm from "../../Components/CommentForm"
 
 const Dashboard = () => {
   // we have access to global state using this piece of code
@@ -19,32 +22,79 @@ const Dashboard = () => {
   const [uploading, setUploading] = useState(false)
   const [posts, setPosts] = useState([])
   const [people, setPeople] = useState([])
+
+  // state for comments
+  const [currPost, setCurrPost] = useState({})
+  const [visible, setVisible] = useState(false)
+  const [comment, setComment] = useState("")
+
+  const handleComment = (post) => {
+    setCurrPost(post)
+    setVisible(true)
+  }
+
+  const addComment = async (event) => {
+    event.preventDefault()
+    // console.log("Post ID currently is", currPost._id)
+    // console.log("Comment currently is", comment)
+
+    try {
+      const { data } = await axios.put("/add-comment", {
+        postId: currPost._id,
+        comment: comment,
+      })
+
+      console.log("add comment", data)
+      setVisible(false)
+      setComment("")
+      fetchPosts()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     if (state && state.token) {
       fetchPosts()
       fetchPeople()
     }
-  }, [state && state.token, posts])
+  }, [state && state.token])
 
   const handleFollow = async (user) => {
-    console.log(user)
+    try {
+      const { data } = await axios.put("/user-follow", { _id: user._id })
+      // update local storage, update user, update toke
+      let auth = JSON.parse(localStorage.getItem("auth"))
+      auth.user = data
+      localStorage.setItem("auth", JSON.stringify(auth))
+      // update context
+      setState({ ...state, user: data })
+
+      // update people state
+      let filtered = people.filter((person) => person._id !== user._id)
+      setPeople(filtered)
+      fetchPosts()
+
+      toast.success(`Following ${user.firstName}`)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const fetchPeople = async () => {
     const { data } = await axios.get("/find-people")
-    console.log(data)
     setPeople(data)
   }
 
   const fetchPosts = async () => {
     try {
-      const { data } = await axios.get("/user-posts")
-      // console.log("user posts => ", data[0])
+      const { data } = await axios.get("/news-feed")
       setPosts(data)
     } catch (err) {
       console.log(err)
     }
   }
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0]
     let formData = new FormData()
@@ -54,7 +104,6 @@ const Dashboard = () => {
     try {
       const { data } = await axios.post("/upload-image", formData)
       setImage({ url: data.url, public_id: data.public_id })
-      // console.log("uploaded image => ", data)
       setUploading(false)
     } catch (err) {
       console.log(err)
@@ -78,6 +127,7 @@ const Dashboard = () => {
       console.error(err)
     }
   }
+
   const handlePostSubmit = async (e) => {
     e.preventDefault()
 
@@ -86,8 +136,6 @@ const Dashboard = () => {
         postContent,
         image,
       })
-
-      console.log(data)
 
       if (data.error) {
         toast.error(data.error)
@@ -101,6 +149,19 @@ const Dashboard = () => {
       console.log(err)
     }
   }
+
+  const handleLike = async (likedPostId) => {
+    const { data } = await axios.put("/like-post", { _id: likedPostId })
+    console.log("liked post ID", likedPostId)
+    fetchPosts()
+  }
+
+  const handleUnlike = async (unLikedPostId) => {
+    const { data } = await axios.put("/unlike-post", { _id: unLikedPostId })
+    console.log("unLiked post ID", unLikedPostId)
+    fetchPosts()
+  }
+
   return (
     // remember --> you have to JSON.stringify state if it is an object
     // wrapper component to protect route
@@ -122,9 +183,21 @@ const Dashboard = () => {
               uploading={uploading}
               image={image}
             ></PostForm>
-            <PostList posts={posts} handleDelete={handleDelete}></PostList>
+            <PostList
+              handleComment={handleComment}
+              handleLike={handleLike}
+              handleUnlike={handleUnlike}
+              posts={posts}
+              handleDelete={handleDelete}
+            ></PostList>
           </div>
+
           <div className='col-md-4' style={{ height: "1vh" }}>
+            {state && state.user && state.user.following && (
+              <Link href={`/user/following`}>
+                <a className='h6'>Following {state.user.following.length}</a>
+              </Link>
+            )}
             <PeopleComponent
               handleFollow={handleFollow}
               people={people}
@@ -132,6 +205,14 @@ const Dashboard = () => {
           </div>
         </div>
         <br />
+
+        <CommentForm
+          comment={comment}
+          addComment={addComment}
+          setComment={setComment}
+          visible={visible}
+          setVisible={setVisible}
+        />
       </div>
     </UserRoute>
   )

@@ -13,9 +13,24 @@ import {
 import renderHTML from "react-render-html"
 import { UserContext } from "../../Context"
 
-const PostList = ({ posts, handleDelete }) => {
+import Link from "next/link"
+
+const PostList = ({
+  posts,
+  handleDelete,
+  handleUnlike,
+  handleLike,
+  handleComment,
+}) => {
   const [state, setState] = useContext(UserContext)
   const router = useRouter()
+  const sourceImage = (user) => {
+    if (user.image) {
+      return <Avatar src={user.image.url}></Avatar>
+    } else {
+      return <Avatar size={30}>{user.firstName[0] + user.lastName[0]}</Avatar>
+    }
+  }
   return (
     <>
       {" "}
@@ -26,9 +41,7 @@ const PostList = ({ posts, handleDelete }) => {
               <div key={post._id} className='card-mb-2 mt-3'>
                 <div className='card-header d-flex justify-content-between'>
                   <div>
-                    <Avatar size={40}>
-                      {post.postedBy.firstName[0] + post.postedBy.lastName[0]}
-                    </Avatar>
+                    {sourceImage(post.postedBy)}
 
                     <span className='pt-2 ml-3' style={{ marginLeft: "1rem" }}>
                       {post.postedBy.firstName} {post.postedBy.lastName}
@@ -52,14 +65,29 @@ const PostList = ({ posts, handleDelete }) => {
                     ></div>
                   )}
                   <div className='d-flex pt-2'>
-                    <HeartOutlined className='text-danger pt-2 h5 pr-5'></HeartOutlined>
+                    {state &&
+                    state.user &&
+                    post.likes &&
+                    post.likes.includes(state.user._id) ? (
+                      <HeartFilled
+                        onClick={() => handleUnlike(post._id)}
+                        className='text-danger pt-2 h5 pr-5'
+                      ></HeartFilled>
+                    ) : (
+                      <HeartOutlined
+                        onClick={() => handleLike(post._id)}
+                        className='text-danger pt-2 h5 pr-5'
+                      ></HeartOutlined>
+                    )}
+
                     <div
                       className='pt-2 pl-5'
                       style={{ marginRight: "1rem", marginLeft: "0.5rem" }}
                     >
-                      3 likes
+                      {post.likes.length} likes
                     </div>
                     <CommentOutlined
+                      onClick={() => handleComment(post)}
                       className='text-danger pt-2 h5 pl-5'
                       style={{ marginRight: "1rem", marginLeft: "0.5rem" }}
                     ></CommentOutlined>
@@ -67,7 +95,9 @@ const PostList = ({ posts, handleDelete }) => {
                       className='pt-2 pl-5'
                       style={{ marginRight: "1rem", marginLeft: "0.5rem" }}
                     >
-                      2 comments
+                      <Link href={`/post/${post._id}`}>
+                        <a>{post.comments.length} comments</a>
+                      </Link>
                     </div>
                     {state &&
                       state.user._id &&
@@ -94,6 +124,28 @@ const PostList = ({ posts, handleDelete }) => {
                       )}
                   </div>
                 </div>
+                {post.comments && post.comments.length > 0 && (
+                  <ul className='list-group'>
+                    {post.comments.map((comment) => (
+                      <li className='list-group-item d-flex justify-content-between align-items-center'>
+                        <div className='ms-2 me-auto'>
+                          <div>
+                            <Avatar
+                              size={30}
+                              className=''
+                              src={sourceImage(comment.postedBy)}
+                            />
+                          </div>
+                          <i className='text-muter'>{comment.text}</i>
+                        </div>
+
+                        <span className='badge badge-primary badge-pill btn-primary'>
+                          {moment(comment.created).fromNow()}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             )
           })}
