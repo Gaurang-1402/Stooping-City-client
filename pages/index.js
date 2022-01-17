@@ -47,7 +47,7 @@ const Home = ({ posts }) => {
     </Head>
   )
 
-  const collection = feed.length > 0 ? feed : posts
+  const collection = posts
   return (
     <>
       {head()}
