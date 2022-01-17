@@ -3,8 +3,9 @@ import { Avatar, List } from "antd"
 import moment from "moment"
 import { useRouter } from "next/router"
 import { UserContext } from "../../Context"
+import Link from "next/link"
 
-const PeopleComponent = ({ people, handleFollow }) => {
+const PeopleComponent = ({ people, handleFollow, handleUnfollow }) => {
   const router = useRouter()
   const [state, setState] = useContext(UserContext)
 
@@ -23,18 +24,41 @@ const PeopleComponent = ({ people, handleFollow }) => {
         renderItem={(user) => (
           <List.Item>
             <List.Item.Meta
-              avatar={sourceImage(user)}
+              avatar={
+                <Link href={`/user/${user.username}`}>
+                  <a className='' style={{ color: "black" }}>
+                    {sourceImage(user)}{" "}
+                  </a>
+                </Link>
+              }
               title={
                 <div className='d-flex justify-content-between'>
-                  <p className='mt-1'>
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <span
-                    onClick={() => handleFollow(user)}
-                    className='text-primary pointer'
-                  >
-                    Follow
-                  </span>
+                  <Link href={`/user/${user.username}`}>
+                    <a className='' style={{ color: "black" }}>
+                      <p className='mt-1'>
+                        {user.firstName} {user.lastName}
+                      </p>
+                    </a>
+                  </Link>
+
+                  {state &&
+                  state.user &&
+                  user &&
+                  user.followers.includes(state.user._id) ? (
+                    <span
+                      onClick={() => handleUnfollow(user)}
+                      className='text-primary pointer'
+                    >
+                      Unfollow
+                    </span>
+                  ) : (
+                    <span
+                      onClick={() => handleFollow(user)}
+                      className='text-primary pointer'
+                    >
+                      Follow
+                    </span>
+                  )}
                 </div>
               }
             />

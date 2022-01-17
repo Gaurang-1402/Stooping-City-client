@@ -8,8 +8,9 @@ import "react-quill/dist/quill.snow.css"
 import PostList from "../../Components/Cards/PostList"
 import PeopleComponent from "../../Components/Cards/PeopleComponent"
 import Link from "next/link"
-import { Modal } from "antd"
+import { Modal, Pagination } from "antd"
 import CommentForm from "../../Components/CommentForm"
+import SearchBar from "../../Components/SearchBar"
 
 const Dashboard = () => {
   // we have access to global state using this piece of code
@@ -20,13 +21,29 @@ const Dashboard = () => {
   const [state, setState] = useContext(UserContext)
   const [image, setImage] = useState({})
   const [uploading, setUploading] = useState(false)
+  // state for posts
   const [posts, setPosts] = useState([])
+  // state for people
   const [people, setPeople] = useState([])
 
   // state for comments
   const [currPost, setCurrPost] = useState({})
   const [visible, setVisible] = useState(false)
   const [comment, setComment] = useState("")
+
+  // state for pagination
+  const [totalPosts, setTotalPosts] = useState(0)
+  const [currPageNumber, setCurrPageNumber] = useState(1)
+
+  useEffect(async () => {
+    try {
+      const { data } = await axios.get("/all-posts")
+
+      setTotalPosts(data)
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
 
   const handleComment = (post) => {
     setCurrPost(post)
@@ -58,7 +75,7 @@ const Dashboard = () => {
       fetchPosts()
       fetchPeople()
     }
-  }, [state && state.token])
+  }, [state && state.token, currPageNumber])
 
   const handleFollow = async (user) => {
     try {
@@ -82,13 +99,18 @@ const Dashboard = () => {
   }
 
   const fetchPeople = async () => {
-    const { data } = await axios.get("/find-people")
-    setPeople(data)
+    try {
+      const { data } = await axios.get("/find-people")
+      console.log(data)
+      setPeople(data)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const fetchPosts = async () => {
     try {
-      const { data } = await axios.get("/news-feed")
+      const { data } = await axios.get(`/news-feed/${currPageNumber}`)
       setPosts(data)
     } catch (err) {
       console.log(err)
@@ -144,6 +166,7 @@ const Dashboard = () => {
         fetchPosts()
         setPostContent("")
         setImage({})
+        setCurrPageNumber(1)
       }
     } catch (err) {
       console.log(err)
@@ -190,9 +213,20 @@ const Dashboard = () => {
               posts={posts}
               handleDelete={handleDelete}
             ></PostList>
+
+            <Pagination
+              current={currPageNumber}
+              total={(totalPosts / 3) * 10}
+              onChange={(value) => setCurrPageNumber(value)}
+              className='py-5'
+            />
           </div>
 
           <div className='col-md-4' style={{ height: "1vh" }}>
+            <SearchBar></SearchBar>
+
+            <br />
+
             {state && state.user && state.user.following && (
               <Link href={`/user/following`}>
                 <a className='h6'>Following {state.user.following.length}</a>

@@ -8,7 +8,7 @@ import { RollbackOutlined } from "@ant-design/icons"
 import Link from "next/link"
 import { toast } from "react-toastify"
 
-const PeopleComponent = () => {
+const FollowingComponent = () => {
   const router = useRouter()
   const [state, setState] = useContext(UserContext)
 
@@ -82,4 +82,4 @@ const PeopleComponent = () => {
   )
 }
 
-export default PeopleComponent
+export default FollowingComponent

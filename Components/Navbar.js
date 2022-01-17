@@ -47,27 +47,24 @@ export const Navbar = () => {
 
   return (
     <div>
-      <nav className='nav bg-dark d-flex justify-content-between'>
-        <div>
-          <Link href='/'>
-            <a className={`nav-link text-light logo`}>
-              <Avatar src='/images/logo.png' /> Wise
-            </a>
-          </Link>
-        </div>{" "}
+      <nav
+        className='nav d-flex dark justify-content-between'
+        style={{ backgroundColor: "blue" }}
+      >
         <Link href='/'>
           <a
             className={`nav-link text-light ${
-              currentTab === "/" ? "current-tab text-dark" : ""
+              currentTab === "/" ? "background-color: navy;" : ""
             }`}
           >
-            Home
+            Wise
           </a>
         </Link>
+
         {state !== null ? (
           <div className='dropdown'>
             <button
-              className='btn btn-secondary dropdown-toggle'
+              className='btn text-light dropdown-toggle'
               type='button'
               id='dropdownMenuButton1'
               data-bs-toggle='dropdown'
