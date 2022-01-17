@@ -8,9 +8,9 @@ import Link from "next/link"
 // npm i socket.io-client
 import io from "socket.io-client"
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
-  reconnection: true,
-})
+// const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
+//   reconnection: true,
+// })
 
 // accept props as an argument to use the props from getServerSideProps
 const Home = ({ posts }) => {
@@ -19,13 +19,13 @@ const Home = ({ posts }) => {
 
   const [feed, setFeed] = useState([])
 
-  useEffect(() => {
-    // console.log("Socket join", socket)
+  // useEffect(() => {
+  //   // console.log("Socket join", socket)
 
-    socket.on("new-post", (newPost) => {
-      setFeed([newPost, ...feed])
-    })
-  }, [])
+  //   socket.on("new-post", (newPost) => {
+  //     setFeed([newPost, ...feed])
+  //   })
+  // }, [])
   const head = () => (
     <Head>
       <title>Wise - A social network by devs for devs</title>
