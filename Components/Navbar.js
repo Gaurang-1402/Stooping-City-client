@@ -98,7 +98,7 @@ export const Navbar = () => {
                         : ""
                     }`}
                   >
-                    Profle
+                    Profile
                   </a>
                 </Link>
               </li>
