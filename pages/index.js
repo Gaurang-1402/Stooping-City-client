@@ -20,20 +20,10 @@ const Home = () => {
 
   const [feed, setFeed] = useState([])
 
-  // useEffect(() => {
-  //   // console.log("Socket join", socket)
-
-  //   socket.on("new-post", (newPost) => {
-  //     setFeed([newPost, ...feed])
-  //   })
-  // }, [])
   const head = () => (
     <Head>
-      <title>Wise - A social network by devs for devs</title>
-      <meta
-        name='description'
-        content='A social network by developers for other web developers'
-      />
+      <title>Finditure</title>
+      <meta name='description' content='A website to find furniture' />
       <meta
         property='og:description'
         content='A social network by developers for other web developers'

@@ -63,7 +63,7 @@ const RegisterPage = () => {
   if (state && state.token) router.push("/")
 
   return (
-    <div className='container'>
+    <div className='container dark'>
       <div className='row'>
         <div className='col'>
           <section className='vh-100 gradient-custom'>

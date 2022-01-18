@@ -48,7 +48,7 @@ export const Navbar = () => {
   return (
     <div>
       <nav
-        className='nav d-flex dark justify-content-between'
+        className='nav d-flex justify-content-between'
         style={{ backgroundColor: "blue" }}
       >
         <Link href='/'>

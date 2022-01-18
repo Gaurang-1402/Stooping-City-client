@@ -38,7 +38,15 @@ const Post = ({
   return (
     <>
       {post && post.postedBy && (
-        <div key={post._id} className='card-mb-2 mt-3'>
+        <div
+          key={post._id}
+          className='card-mb-2 mt-3'
+          style={{
+            borderStyle: "solid",
+            borderRadius: "8px",
+            borderColor: "#ffcc00",
+          }}
+        >
           <div className='card-header d-flex justify-content-between'>
             <div>
               {sourceImage(post.postedBy)}

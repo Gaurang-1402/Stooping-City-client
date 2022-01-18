@@ -75,7 +75,7 @@ const Dashboard = () => {
       fetchPosts()
       fetchPeople()
     }
-  }, [state && state.token, currPageNumber])
+  }, [state && state.token])
 
   const handleFollow = async (user) => {
     try {
@@ -101,7 +101,7 @@ const Dashboard = () => {
   const fetchPeople = async () => {
     try {
       const { data } = await axios.get("/find-people")
-      console.log(data)
+      // console.log(data)
       setPeople(data)
     } catch (err) {
       console.log(err)
@@ -110,7 +110,8 @@ const Dashboard = () => {
 
   const fetchPosts = async () => {
     try {
-      const { data } = await axios.get(`/news-feed/${currPageNumber}`)
+      const { data } = await axios.get("/news-feed")
+      console.log("total number of posts are ", data)
       setPosts(data)
     } catch (err) {
       console.log(err)
@@ -175,13 +176,13 @@ const Dashboard = () => {
 
   const handleLike = async (likedPostId) => {
     const { data } = await axios.put("/like-post", { _id: likedPostId })
-    console.log("liked post ID", likedPostId)
+    // console.log("liked post ID", likedPostId)
     fetchPosts()
   }
 
   const handleUnlike = async (unLikedPostId) => {
     const { data } = await axios.put("/unlike-post", { _id: unLikedPostId })
-    console.log("unLiked post ID", unLikedPostId)
+    // console.log("unLiked post ID", unLikedPostId)
     fetchPosts()
   }
 
@@ -191,62 +192,63 @@ const Dashboard = () => {
     <UserRoute>
       <div className='container-fluid'>
         <div className='row py-5 text-light bg-default-image'>
-          <div className='col text-center'>
+          <div className='col m-auto text-center align-items-center'>
             <h1>Newsfeed</h1>
           </div>
         </div>
+        <div style={{ paddingLeft: "5rem", paddingRight: "5rem" }}>
+          <div className='row py-3'>
+            <div className='col-md-8'>
+              <PostForm
+                handlePostSubmit={handlePostSubmit}
+                postContent={postContent}
+                setPostContent={setPostContent}
+                handleImageUpload={handleImageUpload}
+                uploading={uploading}
+                image={image}
+              ></PostForm>
+              <PostList
+                handleComment={handleComment}
+                handleLike={handleLike}
+                handleUnlike={handleUnlike}
+                posts={posts}
+                handleDelete={handleDelete}
+              ></PostList>
 
-        <div className='row py-3'>
-          <div className='col-md-8'>
-            <PostForm
-              handlePostSubmit={handlePostSubmit}
-              postContent={postContent}
-              setPostContent={setPostContent}
-              handleImageUpload={handleImageUpload}
-              uploading={uploading}
-              image={image}
-            ></PostForm>
-            <PostList
-              handleComment={handleComment}
-              handleLike={handleLike}
-              handleUnlike={handleUnlike}
-              posts={posts}
-              handleDelete={handleDelete}
-            ></PostList>
+              {/* <Pagination
+                current={currPageNumber}
+                total={(totalPosts / 3) * 10}
+                onChange={(value) => setCurrPageNumber(value)}
+                className='py-5'
+              /> */}
+            </div>
 
-            <Pagination
-              current={currPageNumber}
-              total={(totalPosts / 3) * 10}
-              onChange={(value) => setCurrPageNumber(value)}
-              className='py-5'
-            />
+            <div className='col-md-4' style={{ height: "1vh" }}>
+              <SearchBar></SearchBar>
+
+              <br />
+
+              {state && state.user && state.user.following && (
+                <Link href={`/user/following`}>
+                  <a className='h6'>Following {state.user.following.length}</a>
+                </Link>
+              )}
+              <PeopleComponent
+                handleFollow={handleFollow}
+                people={people}
+              ></PeopleComponent>
+            </div>
           </div>
+          <br />
 
-          <div className='col-md-4' style={{ height: "1vh" }}>
-            <SearchBar></SearchBar>
-
-            <br />
-
-            {state && state.user && state.user.following && (
-              <Link href={`/user/following`}>
-                <a className='h6'>Following {state.user.following.length}</a>
-              </Link>
-            )}
-            <PeopleComponent
-              handleFollow={handleFollow}
-              people={people}
-            ></PeopleComponent>
-          </div>
+          <CommentForm
+            comment={comment}
+            addComment={addComment}
+            setComment={setComment}
+            visible={visible}
+            setVisible={setVisible}
+          />
         </div>
-        <br />
-
-        <CommentForm
-          comment={comment}
-          addComment={addComment}
-          setComment={setComment}
-          visible={visible}
-          setVisible={setVisible}
-        />
       </div>
     </UserRoute>
   )
