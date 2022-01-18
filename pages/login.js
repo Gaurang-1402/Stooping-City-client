@@ -55,7 +55,7 @@ const LoginPage = () => {
       }
     } catch (err) {
       setLoading(false)
-      toast.error(err.response.data)
+      console.log(err)
     }
   }
 

@@ -6,14 +6,15 @@ import axios from "axios"
 import Head from "next/head"
 import Link from "next/link"
 // npm i socket.io-client
-import io from "socket.io-client"
+// import io from "socket.io-client"
 
 // const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
 //   reconnection: true,
 // })
 
 // accept props as an argument to use the props from getServerSideProps
-const Home = ({ posts }) => {
+// const Home = ({ posts }) => {
+const Home = () => {
   // we have access to global state using this piece of code
   const [state, setState] = useContext(UserContext)
 
@@ -47,7 +48,7 @@ const Home = ({ posts }) => {
     </Head>
   )
 
-  const collection = posts
+  const collection = []
   return (
     <>
       {head()}
@@ -69,13 +70,13 @@ const Home = ({ posts }) => {
   )
 }
 
-export async function getServerSideProps() {
-  const { data } = await axios.get("/home-posts")
-  return {
-    props: {
-      posts: data,
-    },
-  }
-}
+// export async function getServerSideProps() {
+//   const { data } = await axios.get("/home-posts")
+//   return {
+//     props: {
+//       posts: data,
+//     },
+//   }
+// }
 
 export default Home
