@@ -54,7 +54,7 @@ const RegisterPage = () => {
   if (state && state.token) router.push("/")
 
   return (
-    <div className='container'>
+    <div className='container dark'>
       <div className='row'>
         <div className='col'>
           <section className='vh-100 gradient-custom'>
@@ -63,7 +63,7 @@ const RegisterPage = () => {
                 <div className='col-12 col-lg-9 col-xl-7'>
                   <div
                     className='card shadow-2-strong card-registration'
-                    style={{ borderRadius: 15 }}
+                    style={{ borderRadius: "10px" }}
                   >
                     <div className='card-body p-4 p-md-5'>
                       <h3 className='mb-4 pb-2 pb-md-0 mb-md-5'>

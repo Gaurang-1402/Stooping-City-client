@@ -47,37 +47,41 @@ const FollowingComponent = () => {
     }
   }
   return (
-    <div className='row col-md-6 offset-3'>
-      <List
-        itemLayout='horizontal'
-        dataSource={people}
-        renderItem={(user) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={sourceImage(user)}
-              title={
-                <div className='d-flex justify-content-between'>
-                  <p className='mt-1'>
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <span
-                    onClick={() => handleUnfollow(user)}
-                    className='text-primary pointer'
-                  >
-                    Unfollow
-                  </span>
-                </div>
-              }
-            />
-          </List.Item>
-        )}
-      ></List>
+    <div className='dark container' style={{ height: "100vh" }}>
+      <div className='row dark col-md-6 offset-3'>
+        <div style={{ padding: "5rem", size: "5rem" }}>
+          <Link href='/user/dashboard'>
+            <a className='d-flex justify-content-center'>
+              <RollbackOutlined></RollbackOutlined>
+            </a>
+          </Link>
+        </div>
 
-      <Link href='/user/dashboard'>
-        <a className='d-flex justify-content-center'>
-          <RollbackOutlined></RollbackOutlined>
-        </a>
-      </Link>
+        <List
+          itemLayout='horizontal'
+          dataSource={people}
+          renderItem={(user) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={sourceImage(user)}
+                title={
+                  <div className='d-flex justify-content-between'>
+                    <p className='mt-1'>
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <span
+                      onClick={() => handleUnfollow(user)}
+                      className='text-primary pointer'
+                    >
+                      Unfollow
+                    </span>
+                  </div>
+                }
+              />
+            </List.Item>
+          )}
+        ></List>
+      </div>
     </div>
   )
 }

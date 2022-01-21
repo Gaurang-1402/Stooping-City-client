@@ -5,6 +5,10 @@
   text-shadow: 2px 2px 8px #333;
 }
 
+* {
+  background-color: #222;
+}
+
 .gradient-custom {
   /* fallback for old browsers */
   background: #f093fb;
@@ -34,6 +38,12 @@
   top: 13px;
 }
 
+.quillPlaceholder::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
 .dark * {
   background-color: #222;
   color: #e6e6e6;
@@ -41,12 +51,12 @@
 }
 
 .active {
-  background-color: lightcoral;
+  background-color: #ffcc00;
   color: black;
 }
 
 .current-tab {
-  background-color: lightcoral;
+  background-color: #ffcc00;
   color: black;
 }
 

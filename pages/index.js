@@ -5,6 +5,10 @@ import Post from "../Components/Cards/Post"
 import axios from "axios"
 import Head from "next/head"
 import Link from "next/link"
+import { ReactSVG } from "react-svg"
+import box from "../public/heavy_box.svg"
+import relax from "../public/relaxing.svg"
+import Image from "next/image"
 // npm i socket.io-client
 // import io from "socket.io-client"
 
@@ -42,18 +46,52 @@ const Home = () => {
   return (
     <>
       {head()}
-      <ParallaxBackground url='/images/default.jpg'> WISE</ParallaxBackground>
-      <div className='container'>
+
+      <div className='container dark' style={{ height: "100vh" }}>
         <div className='row pt-5'>
-          {collection.map((post) => (
-            <div key={post._id} className='col-md-4'>
-              <Link href={`/post/view/${post._id}`}>
-                <a style={{ color: "inherit" }}>
-                  <Post post={post} />
+          <div className='col-md-6'>
+            <h1 className='mb-2' style={{ fontSize: "100px" }}>
+              Stooping
+            </h1>
+            <h1 style={{ fontSize: "100px" }}>City</h1>
+
+            <h2>One person’s trash is another person’s treasure</h2>
+            <h4 className='mb-5'>
+              Inspired by{" "}
+              <a href='https://www.instagram.com/stoopingnyc/?hl=en'>
+                Stooping NYC
+              </a>
+            </h4>
+
+            <h5>How does it work?</h5>
+            <h6 style={{ fontWeight: "normal" }}>
+              Browse the posts to see what items are available near you and
+              stoop them up.
+            </h6>
+
+            <h6 style={{ fontWeight: "normal" }}>
+              In case you have items you no longer need, post a picture,
+              description and the address of the item!
+            </h6>
+
+            <div className='btn mt-5'>
+              <Link href='/user/dashboard '>
+                <a>
+                  <div>Start stooping</div>
                 </a>
               </Link>
             </div>
-          ))}
+          </div>
+          <div className='col-md-6'>
+            {/* <ReactSVG src='../public/heavy.png' /> */}
+            <Image
+              className='mb-1'
+              src={box}
+              alt='Man moving out'
+              width={700}
+              height={700}
+            />
+          </div>
         </div>
       </div>
     </>

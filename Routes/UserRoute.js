@@ -29,10 +29,15 @@ const UserRoute = ({ children }) => {
     }, 1000)
 
   return !ok ? (
-    <SyncOutlined
-      spin
-      className='d-flex justify-content-center display-1 text-primary p-5'
-    />
+    <div className='dark d-flex' style={{ height: "100vh" }}>
+      <div className='m-auto' v>
+        <SyncOutlined
+          style={{ width: "300px" }}
+          spin
+          className='d-flex justify-content-center display-1 text-primary p-5'
+        />
+      </div>
+    </div>
   ) : (
     <> {children}</>
   )

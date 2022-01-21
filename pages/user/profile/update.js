@@ -100,15 +100,15 @@ const UpdatePage = () => {
   }, [state && state.user])
   return (
     <>
-      <div className='container-fluid'>
-        <div className='row py-5 text-light bg-default-image'>
-          <div className='col text-center'>
+      <div className='container-fluid dark'>
+        <div className='row py-5 text-light'>
+          <div className='col m-auto text-center align-items-center'>
             <h1>Profile</h1>
           </div>
         </div>
       </div>
 
-      <div className='container'>
+      <div className='container dark'>
         <div className='row'>
           <div className='col'>
             <section className='vh-200 gradient-custom'>
@@ -117,7 +117,7 @@ const UpdatePage = () => {
                   <div className='col-12 col-lg-9 col-xl-7'>
                     <div
                       className='card shadow-2-strong card-registration'
-                      style={{ borderRadius: 15 }}
+                      style={{ borderRadius: "5px" }}
                     >
                       <div className='d-flex justify-content-center h1'>
                         <label>
@@ -287,7 +287,7 @@ const UpdatePage = () => {
                                   onChange={(e) => setEmail(e.target.value)}
                                   type='email'
                                   id='emailAddress'
-                                  className='form-control form-control-lg'
+                                  className='form-control text-dark form-control-lg'
                                 />
                                 <label
                                   className='form-label'

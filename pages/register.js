@@ -72,7 +72,7 @@ const RegisterPage = () => {
                 <div className='col-12 col-lg-9 col-xl-7'>
                   <div
                     className='card shadow-2-strong card-registration'
-                    style={{ borderRadius: 15 }}
+                    style={{ borderRadius: "5px" }}
                   >
                     <div className='card-body p-4 p-md-5'>
                       <h3 className='mb-4 pb-2 pb-md-0 mb-md-5'>
@@ -283,7 +283,7 @@ const RegisterPage = () => {
                           className='
                         '
                         >
-                          <div className='col'>
+                          <div className='col py-5'>
                             Already have an account?{" "}
                             <Link href='/login'>
                               <a className=''> Login</a>

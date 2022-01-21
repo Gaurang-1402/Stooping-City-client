@@ -68,26 +68,35 @@ const editPost = () => {
 
   return (
     <UserRoute>
-      <div className='container-fluid'>
-        <div className='row py-5 text-light bg-default-image'>
-          <div className='col text-center'>
-            <h1>Update Post</h1>
+      <div style={{ height: "100vh" }} className=' dark container'>
+        <div className=' dark container-fluid'>
+          <div className='row py-5 text-light'>
+            <div className='col m-auto text-center align-items-center'>
+              <h1>Update Post</h1>
+            </div>
           </div>
-        </div>
 
-        <div className='row py-3'>
-          <div className='col-md-8 offset-md-2'>
-            <PostForm
-              handlePostSubmit={handlePostSubmit}
-              postContent={post}
-              setPostContent={setPost}
-              handleImageUpload={handleImageUpload}
-              uploading={uploading}
-              image={image}
-            ></PostForm>
+          <div className='dark row py-3'>
+            <div
+              className='col-md-8 offset-md-2'
+              style={{
+                borderColor: "#ffcc00",
+                borderStyle: "solid",
+                borderRadius: "5px",
+              }}
+            >
+              <PostForm
+                handlePostSubmit={handlePostSubmit}
+                postContent={post}
+                setPostContent={setPost}
+                handleImageUpload={handleImageUpload}
+                uploading={uploading}
+                image={image}
+              ></PostForm>
+            </div>
           </div>
+          <br />
         </div>
-        <br />
       </div>
     </UserRoute>
   )

@@ -40,14 +40,18 @@ const PostList = ({
         {posts &&
           posts.map((post) => {
             return (
-              <Post
-                key={post._id}
-                post={post}
-                handleDelete={handleDelete}
-                handleUnlike={handleUnlike}
-                handleLike={handleLike}
-                handleComment={handleComment}
-              />
+              <Link href={`/post/${post._id}`}>
+                <a>
+                  <Post
+                    key={post._id}
+                    post={post}
+                    handleDelete={handleDelete}
+                    handleUnlike={handleUnlike}
+                    handleLike={handleLike}
+                    handleComment={handleComment}
+                  />
+                </a>
+              </Link>
             )
           })}
       </div>

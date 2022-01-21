@@ -62,7 +62,7 @@ const LoginPage = () => {
   if (state && state.token) router.push("/user/dashboard")
 
   return (
-    <div className='container'>
+    <div className='dark container'>
       <div className='row'>
         <div className='col'>
           <section className='vh-100 gradient-custom'>
@@ -71,7 +71,7 @@ const LoginPage = () => {
                 <div className='col-12 col-lg-9 col-xl-7'>
                   <div
                     className='card shadow-2-strong card-registration'
-                    style={{ borderRadius: 15 }}
+                    style={{ borderRadius: " 5px" }}
                   >
                     <div className='card-body p-4 p-md-5'>
                       <h2 className='mb-4 pb-2 pb-md-0 mb-md-5'>
@@ -117,15 +117,19 @@ const LoginPage = () => {
                             className='btn btn-primary btn-lg'
                             type='submit'
                             defaultValue='Login'
+                            // style={{
+                            //   backgroundColor: "#ffcc00",
+                            //   color: "black",
+                            // }}
                           >
-                            {loading ? <Spin></Spin> : "Login"}
+                            {loading ? <Spin className='dark'></Spin> : "Login"}
                           </button>
                         </div>
                         <div
                           className='
                         '
                         >
-                          <div className='col'>
+                          <div className='col py-3'>
                             First time here?{" "}
                             <Link href='/register'>
                               <a className=''> Register</a>

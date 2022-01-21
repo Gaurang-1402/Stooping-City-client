@@ -50,7 +50,10 @@ const UsernameComponent = () => {
     }
   }
   return (
-    <div className='row col-md-6 offset-3'>
+    <div
+      style={{ height: "100vh" }}
+      className='row dark col-md-6 offset-3 mb-2'
+    >
       {user && user.firstName && user.lastName && (
         <div className='pt-5 pb-5'>
           {" "}

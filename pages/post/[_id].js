@@ -49,9 +49,9 @@ const PostComment = () => {
   return (
     <>
       {post && post.postedBy && (
-        <div className='container-fluid'>
-          <div className='row py-5 text-light bg-default-image'>
-            <div className='col text-center'>
+        <div className='dark container-fluid' style={{ height: "100vh" }}>
+          <div className='row py-5 text-light'>
+            <div className='col m-auto text-center align-items-center'>
               <h1>{post.postedBy.firstName}'s post</h1>
             </div>
           </div>
@@ -62,7 +62,7 @@ const PostComment = () => {
             </a>
           </Link>
 
-          <div className='d-flex offset-md-2 row col-8 pt-5'>
+          <div className='dark d-flex offset-md-2 row col-8 pt-5'>
             <Post
               post={post}
               showCommentCount={100}

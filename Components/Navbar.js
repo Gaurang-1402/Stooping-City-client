@@ -48,8 +48,14 @@ export const Navbar = () => {
   return (
     <div>
       <nav
-        className='nav d-flex justify-content-between'
-        style={{ backgroundColor: "blue" }}
+        className='nav dark d-flex justify-content-between'
+        style={{
+          backgroundColor: "#222",
+          borderBottom: "5px",
+          borderStyle: "solid",
+          paddingLeft: "6rem",
+          paddingRight: "6rem",
+        }}
       >
         <Link href='/'>
           <a
@@ -57,12 +63,12 @@ export const Navbar = () => {
               currentTab === "/" ? "background-color: navy;" : ""
             }`}
           >
-            Wise
+            <h4>Stooping City</h4>
           </a>
         </Link>
 
         {state !== null ? (
-          <div className='dropdown'>
+          <div className='dropdown py-2 justify-content-center align-items-center'>
             <button
               className='btn text-light dropdown-toggle'
               type='button'
@@ -112,24 +118,27 @@ export const Navbar = () => {
           </div>
         ) : (
           <>
+            {" "}
             <Link href='/login'>
               <a
-                className={`nav-link text-light ${
+                className={`nav-link text-align-center justify-content-center m-auto text-light ${
                   currentTab === "/login" ? "current-tab  text-dark" : ""
                 }`}
               >
                 Login
               </a>
             </Link>
-            <Link href='/register'>
-              <a
-                className={`nav-link text-light ${
-                  currentTab === "/register" ? "current-tab text-dark" : ""
-                }`}
-              >
-                Register
-              </a>
-            </Link>{" "}
+            <div className='justify-content-center py-2 text-align-center text-light'>
+              <Link href='/register'>
+                <a
+                  className={`nav-link  text-light ${
+                    currentTab === "/register" ? "current-tab text-dark" : ""
+                  }`}
+                >
+                  Register
+                </a>
+              </Link>{" "}
+            </div>
           </>
         )}
       </nav>

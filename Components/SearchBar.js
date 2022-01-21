@@ -71,7 +71,7 @@ const SearchBar = () => {
             value={query}
             className='form-control'
             type='search'
-            placeholder='Search'
+            placeholder='Search for other stoopers'
           />
         </div>
         <div className='col-4'>

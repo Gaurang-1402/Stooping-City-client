@@ -190,10 +190,10 @@ const Dashboard = () => {
     // remember --> you have to JSON.stringify state if it is an object
     // wrapper component to protect route
     <UserRoute>
-      <div className='container-fluid'>
-        <div className='row py-5 text-light bg-default-image'>
+      <div className='dark container-fluid'>
+        <div className='row py-5 text-light'>
           <div className='col m-auto text-center align-items-center'>
-            <h1>Newsfeed</h1>
+            <h1>Get stooping in your city!</h1>
           </div>
         </div>
         <div style={{ paddingLeft: "5rem", paddingRight: "5rem" }}>

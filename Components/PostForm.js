@@ -19,45 +19,66 @@ const PostForm = ({
   image,
   uploading,
 }) => {
+  var inputStyles = {}
+  var placeholderStyles = {
+    color: "#FFFFFF",
+  }
+
   return (
     <>
-      <div className='card'></div>
-      <div className='card-body pb-3'>
-        <form className='form-group'>
-          <ReactQuill
-            theme='snow'
-            value={postContent}
-            onChange={(e) => setPostContent(e)}
-            className='form-control'
-            placeholder='Write something...'
-          />
-        </form>
-      </div>
-
-      <div className='card-footer d-flex justify-content-between text-muted'>
-        <button
-          onClick={handlePostSubmit}
-          className='btn btn-primary btn-sm mt-1'
+      <div className='card'>
+        <div
+          className='pb-3'
+          style={{
+            borderStyle: "solid",
+            borderRadius: "8px",
+            borderColor: "#ffcc00",
+          }}
         >
-          Post
-        </button>
+          <form className='form-group pb-3'>
+            <ReactQuill
+              theme='snow'
+              value={postContent}
+              onClick={() => setPostContent("")}
+              onChange={(e) => setPostContent(e)}
+              className='form-control dark'
+              placeholder='Write something...'
+              style={{ fontColor: "white" }}
+            />
+          </form>
+          <p style={{ marginLeft: "15px" }}>
+            Provide a description and the address of your old posessions ⬆️
+          </p>
+        </div>
 
-        <label>
-          {image && image.url ? (
-            <Avatar size={30} src={image.url} className='mt-1'></Avatar>
-          ) : uploading ? (
-            <LoadingOutlined className='mt-2'></LoadingOutlined>
-          ) : (
-            <CameraOutlined className='mt-2'></CameraOutlined>
-          )}
+        <div className='card-footer d-flex justify-content-between text-muted'>
+          <button
+            onClick={handlePostSubmit}
+            className='btn btn-primary btn-sm mt-1'
+          >
+            Post
+          </button>
 
-          <input
-            onChange={handleImageUpload}
-            type='file'
-            accept='images/*'
-            hidden
-          />
-        </label>
+          <label>
+            {image && image.url ? (
+              <Avatar size={30} src={image.url} className='mt-1'></Avatar>
+            ) : uploading ? (
+              <LoadingOutlined className='mt-2'></LoadingOutlined>
+            ) : (
+              <>
+                Upload an image here
+                <CameraOutlined className='mx-4 mt-2'></CameraOutlined>
+              </>
+            )}
+
+            <input
+              onChange={handleImageUpload}
+              type='file'
+              accept='images/*'
+              hidden
+            />
+          </label>
+        </div>
       </div>
     </>
   )
